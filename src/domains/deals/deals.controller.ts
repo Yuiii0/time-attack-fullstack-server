@@ -23,7 +23,6 @@ export class DealsController {
 
   @Post('/create')
   registerPost(@DUser() user: User, @Body() dto: PostRegisterDto) {
-    console.log(user);
     return this.dealsService.registerPost({ ...dto, authorId: user.id });
   }
 

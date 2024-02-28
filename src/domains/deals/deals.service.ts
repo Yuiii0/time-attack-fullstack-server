@@ -42,13 +42,6 @@ export class DealsService {
     return post;
   }
 
-  async getMyPost(user: Pick<User, 'id' | 'email'>) {
-    const posts = this.prismaService.post.findMany({
-      where: { authorId: user.id },
-    });
-    return posts;
-  }
-
   async updatePost(
     user: Pick<User, 'id' | 'email'>,
     dealId: Post['id'],
