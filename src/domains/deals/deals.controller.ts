@@ -9,6 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { Private } from 'src/decorators/private.decorator';
 import { DUser } from './../../decorators/user.decorator';
 import { PostRegisterDto, PostUpdateDto } from './deals.dto';
 import { DealsService } from './deals.service';
@@ -22,6 +23,7 @@ export class DealsController {
   ) {}
 
   @Post('/create')
+  @Private('user')
   registerPost(@DUser() user: User, @Body() dto: PostRegisterDto) {
     return this.dealsService.registerPost({ ...dto, authorId: user.id });
   }
@@ -37,6 +39,7 @@ export class DealsController {
   }
 
   @Put(':dealId/edit')
+  @Private('user')
   updatePost(
     @DUser() user: User,
     @Param('dealId', ParseIntPipe) dealId: number,
@@ -46,6 +49,7 @@ export class DealsController {
   }
 
   @Delete(':dealId')
+  @Private('user')
   deletePost(
     @DUser() user: User,
     @Param('dealId', ParseIntPipe) dealId: number,

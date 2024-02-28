@@ -22,4 +22,11 @@ export class LikesService {
       return true;
     }
   }
+  async getMyLikedPosts(user: Pick<User, 'id' | 'email'>) {
+    const posts = await this.prismaService.likedPost.findMany({
+      where: { userId: user.id },
+      include: { post: true },
+    });
+    return posts;
+  }
 }

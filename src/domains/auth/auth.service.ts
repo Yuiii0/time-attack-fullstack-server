@@ -60,6 +60,13 @@ export class AuthService {
 
     return accessToken;
   }
+  async refreshToken(user: User) {
+    const id = user.id;
+    const email = user.email;
+    const RefreshedAccessToken = this.generateAccessToken(user);
+
+    return RefreshedAccessToken;
+  }
   generateAccessToken(user: Pick<User, 'id' | 'email'>) {
     const { id, email } = user;
     const subject = String(id);
@@ -67,7 +74,7 @@ export class AuthService {
     const secretKey = this.configService.getOrThrow<string>('JWT_SECRET_KEY');
     const accessToken = sign({ email, accountType: 'user' }, secretKey, {
       subject,
-      expiresIn: '2h',
+      expiresIn: '5m',
     });
 
     return accessToken;

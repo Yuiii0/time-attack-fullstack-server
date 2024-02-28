@@ -1,4 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { Private } from 'src/decorators/private.decorator';
+import { DUser } from 'src/decorators/user.decorator';
 import { UserLogInDto, UserSignUpDto } from './auth.dto';
 import { AuthService } from './auth.service';
 
@@ -16,5 +19,13 @@ export class AuthController {
   async logIn(@Body() dto: UserLogInDto) {
     const accessToken = await this.authService.logIn(dto);
     return { accessToken };
+  }
+
+  @Get('refresh-token')
+  @Private('user')
+  async refreshToken(@DUser() user: User) {
+    // console.log(req.headres.authoriztion.);
+    const accessToken = await this.authService.refreshToken(user);
+    return accessToken;
   }
 }
