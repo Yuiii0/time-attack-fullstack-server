@@ -14,10 +14,36 @@ datasource db {
 }
 
 model User {
-  id                Int       @id @default(autoincrement())
-  email             String    @unique
-  isEmailVerified   Boolean   @default(false)
+  id                Int         @id @default(autoincrement())
+  email             String      @unique
+  isEmailVerified   Boolean?    @default(false)
   encryptedPassword String
-  createdAt         DateTime  @default(now())
-  deletedAt         DateTime?
+  createdAt         DateTime    @default(now())
+  writtenPosts      Post[]      @relation(name: "writtenPosts")
+  likedPosts        LikedPost[]
+}
+
+model Post {
+  id        Int         @id @default(autoincrement())
+  authorId  Int
+  author    User        @relation(name: "writtenPosts", fields: [authorId], references: [id])
+  title     String
+  content   String
+  imgSrc    String?
+  price     Int
+  location  String
+  likedPost LikedPost[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model LikedPost {
+  id        Int      @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
 }
