@@ -7,11 +7,13 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
-import { Private } from 'src/decorators/private.decorator';
 import { DUser } from './../../decorators/user.decorator';
-import { PostRegisterDto, PostUpdateDto } from './deals.dto';
+import { PostUpdateDto } from './deals.dto';
 import { DealsService } from './deals.service';
 import { LikesService } from './likes/likes.service';
 
@@ -23,9 +25,26 @@ export class DealsController {
   ) {}
 
   @Post('/create')
-  @Private('user')
-  registerPost(@DUser() user: User, @Body() dto: PostRegisterDto) {
-    return this.dealsService.registerPost({ ...dto, authorId: user.id });
+  // @Private('user')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @DUser() user: User,
+    @UploadedFile() image: Express.Multer.File,
+    @Body() dto: any,
+  ) {
+    // Multer는 파일을 다루는 라이브러리
+
+    const data = {
+      imgSrc: image,
+      title: dto.title,
+      content: dto.content,
+      location: dto.location,
+      price: Number(dto.price),
+    };
+
+    const result = this.dealsService.createProduct(user.id, data); //서비스에 보내줌
+
+    return result;
   }
 
   @Get()
@@ -39,7 +58,7 @@ export class DealsController {
   }
 
   @Put(':dealId/edit')
-  @Private('user')
+  // @Private('user')
   updatePost(
     @DUser() user: User,
     @Param('dealId', ParseIntPipe) dealId: number,
@@ -49,7 +68,7 @@ export class DealsController {
   }
 
   @Delete(':dealId')
-  @Private('user')
+  // @Private('user')
   deletePost(
     @DUser() user: User,
     @Param('dealId', ParseIntPipe) dealId: number,

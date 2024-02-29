@@ -24,7 +24,6 @@ export class AuthController {
   @Get('refresh-token')
   @Private('user')
   async refreshToken(@DUser() user: User) {
-    // console.log(req.headres.authoriztion.);
     const accessToken = await this.authService.refreshToken(user);
     return accessToken;
   }

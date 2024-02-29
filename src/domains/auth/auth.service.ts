@@ -74,7 +74,7 @@ export class AuthService {
     const secretKey = this.configService.getOrThrow<string>('JWT_SECRET_KEY');
     const accessToken = sign({ email, accountType: 'user' }, secretKey, {
       subject,
-      expiresIn: '5m',
+      expiresIn: '20m',
     });
 
     return accessToken;

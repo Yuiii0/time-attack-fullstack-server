@@ -47,7 +47,9 @@ export class AuthMiddleware implements NestMiddleware<Request, Response> {
         id: Number(id),
       },
     });
-    if (!user) throw new BadRequestException('Deleted user');
+    if (!user) {
+      throw new BadRequestException('Deleted user');
+    }
 
     req.user = user;
 
