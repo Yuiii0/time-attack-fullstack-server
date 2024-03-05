@@ -29,6 +29,7 @@
     "@nestjs/serve-static": "^4.0.1",
     "@prisma/client": "^5.10.2",
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/validator": "^13.11.9",
     "bcrypt": "^5.1.1",
