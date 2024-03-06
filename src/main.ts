@@ -19,6 +19,7 @@ async function bootstrap() {
       'http://localhost:3000',
       'https://time-attack-fullstack-client-dusky.vercel.app',
     ],
+    credentials: true,
   });
   app.use(cookieParser());
   app.useGlobalInterceptors(new TransformInterceptor());
