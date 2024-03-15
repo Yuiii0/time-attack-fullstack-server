@@ -14,13 +14,7 @@ async function bootstrap() {
   //   }),
   // );
   // app.use(cors());
-  app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://time-attack-fullstack-client-dusky.vercel.app',
-    ],
-    credentials: true,
-  });
+  app.enableCors();
   app.use(cookieParser());
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
